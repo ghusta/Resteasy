@@ -13,7 +13,10 @@
   <url>http://maven.apache.org</url>
 
   <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+      <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+      <!-- Hibernate Validator -->
+      <hibernate-validator.version>4.2.0.Final</hibernate-validator.version>
   </properties>
 
   <dependencies>
@@ -27,7 +30,7 @@
 		<dependency>
      		<groupId>org.hibernate</groupId>
      		<artifactId>hibernate-validator</artifactId>
-     		<version>4.2.0.Final</version>
+     		<version>${hibernate-validator.version}</version>
  		</dependency>
  		
  		<dependency>
