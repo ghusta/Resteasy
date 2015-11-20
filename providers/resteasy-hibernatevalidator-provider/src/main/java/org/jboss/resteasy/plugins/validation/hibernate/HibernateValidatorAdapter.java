@@ -7,10 +7,9 @@ import java.util.Set;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Validator;
+import javax.validation.executable.ExecutableValidator;
 
-import org.hibernate.validator.method.MethodConstraintViolation;
-import org.hibernate.validator.method.MethodConstraintViolationException;
-import org.hibernate.validator.method.MethodValidator;
+
 import org.jboss.resteasy.spi.validation.DoNotValidateRequest;
 import org.jboss.resteasy.spi.validation.ValidateRequest;
 import org.jboss.resteasy.spi.validation.ValidatorAdapter;
@@ -19,14 +18,18 @@ import org.jboss.resteasy.util.FindAnnotation;
 class HibernateValidatorAdapter implements ValidatorAdapter {
 
 	private final Validator validator;
-	private final MethodValidator methodValidator;
+
+	// Voir ExecutableValidator ? (BV 1.1)
+	//private final MethodValidator methodValidator;
+    private final ExecutableValidator methodValidator;
 
 	HibernateValidatorAdapter(Validator validator) {
 		if( validator == null )
 			throw new IllegalArgumentException("Validator cannot be null");
 		
 		this.validator = validator;
-		this.methodValidator = validator.unwrap(MethodValidator.class);
+		// this.methodValidator = validator.unwrap(MethodValidator.class);
+        this.methodValidator = validator.forExecutables();
 	}
 
 	@Override
@@ -59,10 +62,14 @@ class HibernateValidatorAdapter implements ValidatorAdapter {
 				}
 			}
 			
-			Set<MethodConstraintViolation<?>> constraintViolations = new HashSet<MethodConstraintViolation<?>>(methodValidator.validateAllParameters(resource, invokedMethod, args, set.toArray(new Class<?>[set.size()])));
-			
+//			Set<MethodConstraintViolation<?>> constraintViolations = new HashSet<MethodConstraintViolation<?>>(methodValidator.validateAllParameters(resource, invokedMethod, args, set.toArray(new Class<?>[set.size()])));
+//
+//			if(constraintViolations.size() > 0)
+//				throw new MethodConstraintViolationException(constraintViolations);
+			Set<ConstraintViolation<?>> constraintViolations = new HashSet<ConstraintViolation<?>>(methodValidator.validateAllParameters(resource, invokedMethod, args, set.toArray(new Class<?>[set.size()])));
+
 			if(constraintViolations.size() > 0)
-				throw new MethodConstraintViolationException(constraintViolations);
+				throw new ConstraintViolationException(constraintViolations);
 		}
 	}
 	
