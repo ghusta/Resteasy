@@ -16,7 +16,7 @@
       <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
       <!-- Hibernate Validator -->
-      <hibernate-validator.version>4.2.0.Final</hibernate-validator.version>
+      <hibernate-validator.version>5.2.2.Final</hibernate-validator.version>
   </properties>
 
   <dependencies>
