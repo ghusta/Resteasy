@@ -19,8 +19,9 @@ class HibernateValidatorAdapter implements ValidatorAdapter {
 
 	private final Validator validator;
 
-	// Voir ExecutableValidator ? (BV 1.1)
-	//private final MethodValidator methodValidator;
+    /**
+     * @since Bean-Validation 1.1
+     */
     private final ExecutableValidator methodValidator;
 
 	HibernateValidatorAdapter(Validator validator) {
@@ -28,7 +29,6 @@ class HibernateValidatorAdapter implements ValidatorAdapter {
 			throw new IllegalArgumentException("Validator cannot be null");
 		
 		this.validator = validator;
-		// this.methodValidator = validator.unwrap(MethodValidator.class);
         this.methodValidator = validator.forExecutables();
 	}
 
@@ -62,11 +62,7 @@ class HibernateValidatorAdapter implements ValidatorAdapter {
 				}
 			}
 			
-//			Set<MethodConstraintViolation<?>> constraintViolations = new HashSet<MethodConstraintViolation<?>>(methodValidator.validateAllParameters(resource, invokedMethod, args, set.toArray(new Class<?>[set.size()])));
-//
-//			if(constraintViolations.size() > 0)
-//				throw new MethodConstraintViolationException(constraintViolations);
-			Set<ConstraintViolation<?>> constraintViolations = new HashSet<ConstraintViolation<?>>(methodValidator.validateAllParameters(resource, invokedMethod, args, set.toArray(new Class<?>[set.size()])));
+			Set<ConstraintViolation<?>> constraintViolations = new HashSet<ConstraintViolation<?>>(methodValidator.validateParameters(resource, invokedMethod, args, set.toArray(new Class<?>[set.size()])));
 
 			if(constraintViolations.size() > 0)
 				throw new ConstraintViolationException(constraintViolations);
